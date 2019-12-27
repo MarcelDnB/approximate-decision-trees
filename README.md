@@ -1,2 +1,1 @@
-# approximate-decision-trees
-AI project
+# Approximate Decision Trees
