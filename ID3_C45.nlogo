@@ -11,14 +11,14 @@ globals [
 to load-DF
   ; Clean everything
   ca
-  ask patches [set pcolor white]
-  set decision-tree nobody
+  ask patches [set pcolor white] ;ponemos de blanco el espacio
+  set decision-tree nobody ;inicializamos el arbol con ninguna tortuga
   ; Read the dataset file
-  set DataFrame DF:load user-file
-  if DataFrame != false [
+  set DataFrame DF:load user-file ;cargamos el fichero de datos
+  if DataFrame != false [;si el archivo es válido empezamos a leer
     ; Print the dataset
     output-print "Original Dataset:"
-    output-print DF:output DataFrame
+    output-print DF:output DataFrame ;vamos imprimiendo las líneas
   ]
 end
 
@@ -28,7 +28,7 @@ to main-ID3
   if DataFrame != false
   [
     ; Apply ID3 Algorithm
-    set decision-tree ID3:ID3 DataFrame (last DF:Header DataFrame)
+    set decision-tree ID3:ID3 DataFrame (last DF:Header DataFrame);le decimos al arbol de decision asignarse lo que devuelva id3 con el dataframe dado
     layout
   ]
 end
@@ -152,6 +152,21 @@ NIL
 NIL
 NIL
 1
+
+SLIDER
+73
+564
+245
+597
+profundidad
+profundidad
+0
+100
+2.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
