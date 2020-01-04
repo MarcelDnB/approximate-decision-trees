@@ -154,10 +154,10 @@ NIL
 1
 
 SLIDER
-73
-564
-245
-597
+6
+483
+178
+516
 profundidad
 profundidad
 0
