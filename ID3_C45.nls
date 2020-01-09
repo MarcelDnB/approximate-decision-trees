@@ -143,6 +143,7 @@ to-report ID3:ID3_aux [df]
     ;Si la profundidad es igual a "depth" + 1 significa que lo siguiente que salga en la rama tiene que ser una hoja, luego tenemos que hacer algo para que no siga
     ;poniendo mas categorias abajo ya que nos pasariamos del limite profundidad.
     if (profundidad - 1 = depth ) [
+      
       ;Contiene las filas de las categorias truncadas que corresponden a una arista actual en el caso de ejecutar el data de "PlayGolf"
       ;por aqui van a pasar las filas correspondientes a Rainy y Sunny ya que hemos tenido que truncar estas.
       let auxiliar (DF:filter-att DataFrame categoria aristaActual) 
@@ -159,24 +160,21 @@ to-report ID3:ID3_aux [df]
       ]
       
       ;La ordeno para identificar posteriormente los elementos mas facil
-      set listaProv sort listaProv 
-      
-      ;Añado un item mas simplemente para poder hacer el repeat n comodamente ya que da igual, solo quiero saber cuantos tipos de salidas hay por lo que no importa si
-      ;añadimos un elemento mas en el ejemplo de antes da igual añadir un true o false mas ya que queremos ver cuantos TIPOS de salidas hay
-      let listaProvAux lput (item 0 listaProv) listaProv 
+      set listaProv sort listaProv
       
       ;Necesitamos saber cuantos valores de la pregunta general se pueden devolver, en este caso son solo 2, true/false, pero en otros problemas se pueden dar más por lo que
       ;lo tenemos que generalizar.
       let i 0
       let varDiferentes []
+      
       ;Basicamente voy metiendo en una lista los valores que no estén dentro de la lista provisional, es decir, al principio true no está, pues lo metemos, luego al iterar
       ;si nos encontramos otra vez el true ya no lo metemos ya que con "member?" podemos comprobar eso, sin embargo si encontramos el false si lo metemos y ya tendriamos
       ;los dos valores en "varDiferentes".
-      repeat (length listaProvAux) - 2 [
-      set i i + 1 
-        if (not member? (item (i + 1) listaProvAux)  varDiferentes) [
-        set varDiferentes lput (item (i + 1) listaProvAux) varDiferentes ;veo q valores de retorno diferentes tenemos
+      repeat (length listaProv) [
+        if (not member? (item i listaProv)  varDiferentes) [
+        set varDiferentes lput (item i listaProv) varDiferentes ;veo q valores de retorno diferentes tenemos
         ]
+        set i i + 1
       ]
       
       
@@ -185,7 +183,7 @@ to-report ID3:ID3_aux [df]
       let valores []
       let contar 0
       foreach varDiferentes [ x -> 
-        set contar (filter [ j -> j = x] listaProv) 
+        set contar (filter [ j -> j = x] listaProv)
         set valores lput contar valores ; meto las cuentas en una lista y vamos a poder identificar los valores ya que tienen el mismo indice q varDiferentes
         set contar 0
       ]
