@@ -58,13 +58,13 @@ to test
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-6
-56
-508
-483
+53
+4
+1020
+824
 -1
 -1
-12.67
+24.6
 1
 12
 1
@@ -85,10 +85,10 @@ ticks
 30.0
 
 BUTTON
-5
-10
-72
-55
+1195
+485
+1262
+530
 ID3
 main-ID3
 NIL
@@ -102,17 +102,17 @@ NIL
 1
 
 OUTPUT
-509
+1196
 10
-1208
+1895
 483
 11
 
 BUTTON
-72
-10
-145
-55
+1262
+485
+1335
+530
 C4.5
 main-C4.5 (read-from-string Numerical-attributes)
 NIL
@@ -126,10 +126,10 @@ NIL
 1
 
 INPUTBOX
-145
-10
-508
-79
+1335
+485
+1698
+554
 Numerical-attributes
 [\"AGE\" \"BILIRUBIN\" \"ALK PHOSPHATE\" \"SGOT\" \"ALBUMIN\" \"PROTIME\"]
 1
@@ -137,9 +137,9 @@ Numerical-attributes
 String
 
 BUTTON
-1124
+1811
 16
-1187
+1874
 49
 Load
 load-df
@@ -154,10 +154,10 @@ NIL
 1
 
 SLIDER
-6
-483
-178
-516
+1701
+485
+1873
+518
 profundidad
 profundidad
 0
