@@ -5,7 +5,7 @@
 ;; It works on datasets given as Dataframes (rows of data with some fixed structure 
 ;; given by a header). In this version it works only with categorical (not numerical)
 ;; attributes.
-
+extensions [matrix]
 ;; Family of nodes that will build the Decision Tree
 globals[
 aristaActual
@@ -112,40 +112,53 @@ to-report ID3:ID3 [df att-target]
   report rep
 end
 ;---------------------------------------------------------------
-
-to-report trataCadena[listaCadena num]
-   report reduce sentence (item num listaCadena) 
-   
+to-report juntaCadena[lis1 lis2]
+report (map [[x y] -> list x y] lis1 lis2)
+    
 end  
+
 to-report ID3_mConfusion[df]
   let tam DF:size DataFrameTest
   let auxiliar DF:first (first tam) DataFrameTest
 
   ;quito la parte de los nombres q indican de q es cada columna, nos interesan solo las filas, no necesitamos los nombres de las columnas
-  set auxiliar remove-item 0 auxiliar 
+  let cabecera item 0 auxiliar 
+  set auxiliar remove-item 0 auxiliar
   let i 0
   let resultados[]
   repeat (length auxiliar) [ 
-    let q (trataCadena auxiliar i) 
-    ;ask decision-tree [set w ID3:evaluate [["Outlook" [(trataCadena auxiliar i)]] [ "Temp" "Hot"] ["Humidity" "Normal"] ["Windy" "True"]]]
-    print sublist q 0 1
-    
-   ask decision-tree [set resultados ID3:evaluate [["Outlook" ( (sublist q i (i + 1)))] [ "Temp" "Hot"] ["Humidity" "Normal"] ["Windy" "True"]]]
+    let x reduce sentence item i auxiliar
+    let z juntaCadena cabecera x
+    ask decision-tree [ set resultados lput (ID3:evaluate (juntaCadena cabecera x)) resultados]
     set i i + 1 
-    ;print is-string? (reduce sentence q)
   ]
   let listaProv []
       foreach auxiliar [x -> 
       set listaProv lput (word last x) listaProv
       ]
-  let a 0
-  ask decision-tree [set a ID3:evaluate [["Outlook" "Rainy"] [ "Temp" "Hot"] ["Humidity" "Normal"] ["Windy" "True"]]]
-  ;ask decision-tree [show ID3:evaluate [["Outlook" "Rainy"] [ "Temp" "Hot"] ["Humidity" "Normal"] ["Windy" "True"] ["PlayGolf" "True"]]]
-  
-  ;print a
-  report listaProv
+  let j 0
+  let varDiferentes []
+  repeat (length listaProv ) [
+    if (not member? (item j listaProv)  varDiferentes) [
+    set varDiferentes lput (item j listaProv) varDiferentes ;veo q valores de retorno diferentes tenemos
+    ]
+    set j j + 1
+  ]
+  set varDiferentes (length varDiferentes)
+  ;añadimos los datos a la matriz de confusion
+  let m matrix:make-constant 2 2 0
+  set j 0
+  repeat (length listaProv ) [
+    ifelse ((item j listaProv) = (item j resultados) ) AND (item j listaProv = true) [matrix:set m 0 0 ((matrix:get m 0 0) + 1)][matrix:set m 0 1 ((matrix:get m 0 1) + 1)]
+    ifelse ((item j listaProv) = (item j resultados) ) AND (item j listaProv = false) [matrix:set m 1 0 ((matrix:get m 1 0) + 1)][matrix:set m 1 1 ((matrix:get m 1 1) + 1)]
+  ]  
+  ;listaProv = Valores reales
+  ;resultados = Valores Predichos
+
+  report m
 end  
 ;---------------------------------------------------------------
+
 ; ID3 Algorithm recursive.
 ;  Diferenciate between 
 ;                   Answer-node (it is classified)

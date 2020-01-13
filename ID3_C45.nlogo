@@ -36,7 +36,7 @@ end
 
 ; Demo function for ID3 Algorithm
 to main-ID3
-  print ID3_mConfusion DataFrameTest
+
   ct
   if DataFrame != false
   [
@@ -44,6 +44,7 @@ to main-ID3
     set decision-tree ID3:ID3 DataFrame (last DF:Header DataFrame);le decimos al arbol de decision asignarse lo que devuelva id3 con el dataframe dado
     layout
   ]
+    show ID3_mConfusion DataFrameTest
 end
 
 ; Demo function for C4.5 Algorithm
@@ -180,34 +181,17 @@ profundidad
 profundidad
 0
 100
-3.0
+6.0
 1
 1
 NIL
 HORIZONTAL
 
 BUTTON
-1412
-49
+1388
+84
 1475
-82
-Test
-test
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-1544
-173
-1631
-207
+118
 Load Test
 load-DF-Test
 NIL
