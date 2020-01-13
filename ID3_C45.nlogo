@@ -6,6 +6,8 @@ __includes ["ID3_C45.nls" "LayoutSpace.nls" "DF.nls"]
 globals [
   decision-tree ; Node to store the produced Decision Tree
   DataFrame     ; Dataframe to work
+  DataFrameTest ; Dataframe to test
+  listaTest
 ]
 
 to load-DF
@@ -21,9 +23,20 @@ to load-DF
     output-print DF:output DataFrame ;vamos imprimiendo las líneas
   ]
 end
+to load-DF-Test
+  ; Clean everything
+
+  set DataFrameTest DF:load user-file ;cargamos el fichero de datos
+  if DataFrameTest != false [;si el archivo es válido empezamos a leer
+    ; Print the dataset
+    output-print "Test Dataset:"
+    output-print DF:output DataFrameTest ;vamos imprimiendo las líneas
+  ]
+end
 
 ; Demo function for ID3 Algorithm
 to main-ID3
+  print ID3_mConfusion DataFrameTest
   ct
   if DataFrame != false
   [
@@ -54,17 +67,22 @@ to layout
 end
 
 to test
-  ask decision-tree [show ID3:evaluate [["Outlook" "Rainy"] [ "Temp" "Hot"] ["Humidity" "High"] ["Windy" "True"] ]]
+  let a 0
+  ask decision-tree [set a ID3:evaluate [["Outlook" "Rainy"] [ "Temp" "Hot"] ["Humidity" "Normal"] ["Windy" "True"]]]
+
+  ;ask decision-tree [show ID3:evaluate [["Outlook" "Rainy"] [ "Temp" "Hot"] ["Humidity" "Normal"] ["Windy" "True"] ["PlayGolf" "True"]]]
+  ;let a ID3:evaluate [["Outlook" "Rainy"] [ "Temp" "Hot"] ["Humidity" "Normal"] ["Windy" "True"]]
+  print a
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
 53
 4
-1020
-824
+752
+598
 -1
 -1
-24.6
+17.73
 1
 12
 1
@@ -85,9 +103,9 @@ ticks
 30.0
 
 BUTTON
-1195
+795
 485
-1262
+862
 530
 ID3
 main-ID3
@@ -102,16 +120,16 @@ NIL
 1
 
 OUTPUT
-1196
+796
 10
-1895
+1495
 483
 11
 
 BUTTON
-1262
+862
 485
-1335
+935
 530
 C4.5
 main-C4.5 (read-from-string Numerical-attributes)
@@ -126,9 +144,9 @@ NIL
 1
 
 INPUTBOX
-1335
+935
 485
-1698
+1298
 554
 Numerical-attributes
 [\"AGE\" \"BILIRUBIN\" \"ALK PHOSPHATE\" \"SGOT\" \"ALBUMIN\" \"PROTIME\"]
@@ -137,10 +155,10 @@ Numerical-attributes
 String
 
 BUTTON
-1811
-16
-1874
-49
+1412
+18
+1475
+51
 Load
 load-df
 NIL
@@ -154,19 +172,53 @@ NIL
 1
 
 SLIDER
-1701
+1301
 485
-1873
+1473
 518
 profundidad
 profundidad
 0
 100
-2.0
+3.0
 1
 1
 NIL
 HORIZONTAL
+
+BUTTON
+1412
+49
+1475
+82
+Test
+test
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+1544
+173
+1631
+207
+Load Test
+load-DF-Test
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -521,7 +573,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.1.0
+NetLogo 6.1.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@

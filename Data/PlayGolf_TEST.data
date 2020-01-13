@@ -1,0 +1,6 @@
+Outlook,Temp,Humidity,Windy,PlayGolf
+Overcast,Hot,High,False,true
+Sunny,Mild,High,True,false
+Rainy,Mild,Normal,True,true
+Rainy,Mild,High,False,false
+Sunny,Mild,Normal,False,true

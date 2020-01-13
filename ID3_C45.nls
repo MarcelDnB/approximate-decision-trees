@@ -111,7 +111,41 @@ to-report ID3:ID3 [df att-target]
   ]
   report rep
 end
+;---------------------------------------------------------------
 
+to-report trataCadena[listaCadena num]
+   report reduce sentence (item num listaCadena) 
+   
+end  
+to-report ID3_mConfusion[df]
+  let tam DF:size DataFrameTest
+  let auxiliar DF:first (first tam) DataFrameTest
+
+  ;quito la parte de los nombres q indican de q es cada columna, nos interesan solo las filas, no necesitamos los nombres de las columnas
+  set auxiliar remove-item 0 auxiliar 
+  let i 0
+  let resultados[]
+  repeat (length auxiliar) [ 
+    let q (trataCadena auxiliar i) 
+    ;ask decision-tree [set w ID3:evaluate [["Outlook" [(trataCadena auxiliar i)]] [ "Temp" "Hot"] ["Humidity" "Normal"] ["Windy" "True"]]]
+    print sublist q 0 1
+    
+   ask decision-tree [set resultados ID3:evaluate [["Outlook" ( (sublist q i (i + 1)))] [ "Temp" "Hot"] ["Humidity" "Normal"] ["Windy" "True"]]]
+    set i i + 1 
+    ;print is-string? (reduce sentence q)
+  ]
+  let listaProv []
+      foreach auxiliar [x -> 
+      set listaProv lput (word last x) listaProv
+      ]
+  let a 0
+  ask decision-tree [set a ID3:evaluate [["Outlook" "Rainy"] [ "Temp" "Hot"] ["Humidity" "Normal"] ["Windy" "True"]]]
+  ;ask decision-tree [show ID3:evaluate [["Outlook" "Rainy"] [ "Temp" "Hot"] ["Humidity" "Normal"] ["Windy" "True"] ["PlayGolf" "True"]]]
+  
+  ;print a
+  report listaProv
+end  
+;---------------------------------------------------------------
 ; ID3 Algorithm recursive.
 ;  Diferenciate between 
 ;                   Answer-node (it is classified)
@@ -123,6 +157,7 @@ to-report ID3:ID3_aux [df]
   ;print word (ID3:node-type) (depth)
   
   let finales DF:column (last first df) df
+  ;print finales
   ifelse ID3:classified? df
   [
     hatch-ID3:nodes 1
@@ -158,6 +193,9 @@ to-report ID3:ID3_aux [df]
       foreach auxiliar [x -> 
       set listaProv lput (word last x) listaProv 
       ]
+      ;print listaProv
+      ;print auxiliar
+
       
       ;La ordeno para identificar posteriormente los elementos mas facil
       set listaProv sort listaProv
