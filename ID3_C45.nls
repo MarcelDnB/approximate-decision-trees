@@ -142,11 +142,8 @@ to-report ID3:ID3_aux [df]
   [
     ;SEGUNDO PARÁMETRO
     if (length auxiliar1 < minimum_size) [
-    
       
-      
-      
-      
+    ;Hago lo mismo que en el parámetro 1, todo basicamente para imprimir los resultados bien
     let listaProv []
       ;Pongo en una lista provisional el valor de retorno de estas categorias truncadas, con esto me refiero que cojo la pregunta general, es decir, la de ¿Se juega a golf?
       ;que corresponde con la ultima columna en los datos "PlayGolf" y puede ser true o false. En todos los datos vamos a cuestionar siempre la ultima columna, con esto quiero
@@ -183,12 +180,6 @@ to-report ID3:ID3_aux [df]
         set valores lput contar valores ; meto las cuentas en una lista y vamos a poder identificar los valores ya que tienen el mismo indice q varDiferentes
         set contar 0
       ]
-      
-      
-      
-      
-      
-    
     hatch-ID3:nodes 1
     [
       set ID3:node-type 2
