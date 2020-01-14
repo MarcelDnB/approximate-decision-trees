@@ -1,0 +1,7 @@
+COLOR,ALAS,TAMANIO,VELOCIDAD,LEPISTO
+negro,true,grande,alta,false
+blanco,false,grande,media,false
+amarillo,false,grande,baja,false
+blanco,true,medio,alta,true
+negro,false,medio,alta,true
+rojo,true,pequenio,alta,true

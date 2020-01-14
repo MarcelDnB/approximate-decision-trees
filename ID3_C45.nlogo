@@ -44,7 +44,12 @@ to main-ID3
     set decision-tree ID3:ID3 DataFrame (last DF:Header DataFrame);le decimos al arbol de decision asignarse lo que devuelva id3 con el dataframe dado
     layout
   ]
-    show ID3_mConfusion DataFrameTest
+
+end
+to muestrame
+    let matrizConfusion ID3_mConfusion DataFrameTest
+  show matrizConfusion
+  mostrar-Matriz-Confusion matrizConfusion
 end
 
 ; Demo function for C4.5 Algorithm
@@ -69,7 +74,7 @@ end
 
 to test
   let a 0
-  ask decision-tree [set a ID3:evaluate [["Outlook" "Rainy"] [ "Temp" "Hot"] ["Humidity" "Normal"] ["Windy" "True"]]]
+  ask decision-tree [show ID3:evaluate [["Outlook" "Rainy"] [ "Temp" "Hot"] ["Humidity" "Normal"] ["Windy" "True"]]]
 
   ;ask decision-tree [show ID3:evaluate [["Outlook" "Rainy"] [ "Temp" "Hot"] ["Humidity" "Normal"] ["Windy" "True"] ["PlayGolf" "True"]]]
   ;let a ID3:evaluate [["Outlook" "Rainy"] [ "Temp" "Hot"] ["Humidity" "Normal"] ["Windy" "True"]]
@@ -77,10 +82,10 @@ to test
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-53
-4
-752
-598
+8
+10
+707
+604
 -1
 -1
 17.73
@@ -104,10 +109,10 @@ ticks
 30.0
 
 BUTTON
-795
-485
-862
-530
+713
+487
+780
+532
 ID3
 main-ID3
 NIL
@@ -121,17 +126,17 @@ NIL
 1
 
 OUTPUT
-796
+712
 10
-1495
+1257
 483
 11
 
 BUTTON
-862
-485
-935
-530
+780
+487
+853
+532
 C4.5
 main-C4.5 (read-from-string Numerical-attributes)
 NIL
@@ -145,10 +150,10 @@ NIL
 1
 
 INPUTBOX
-935
-485
-1298
-554
+713
+533
+1076
+602
 Numerical-attributes
 [\"AGE\" \"BILIRUBIN\" \"ALK PHOSPHATE\" \"SGOT\" \"ALBUMIN\" \"PROTIME\"]
 1
@@ -156,10 +161,10 @@ Numerical-attributes
 String
 
 BUTTON
-1412
-18
-1475
-51
+1170
+19
+1233
+52
 Load
 load-df
 NIL
@@ -173,27 +178,99 @@ NIL
 1
 
 SLIDER
-1301
-485
-1473
-518
+857
+488
+1029
+521
 profundidad
 profundidad
 0
 100
-6.0
+3.0
 1
 1
 NIL
 HORIZONTAL
 
 BUTTON
-1388
-84
-1475
-118
+1146
+55
+1233
+89
 Load Test
 load-DF-Test
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+MONITOR
+1262
+10
+1410
+55
+Verdadero Negativo
+precision verdaderoNegativo 2
+17
+1
+11
+
+MONITOR
+1262
+57
+1410
+102
+Exactitud
+precision exactitud 2
+17
+1
+11
+
+MONITOR
+1262
+104
+1410
+149
+Sensibilidad
+precision sensibilidad 2
+17
+1
+11
+
+MONITOR
+1262
+152
+1409
+197
+Especifidad
+precision especifidad 2
+17
+1
+11
+
+MONITOR
+1262
+199
+1409
+244
+Precision
+precision precisionAc 2
+17
+1
+11
+
+BUTTON
+1033
+488
+1205
+521
+Muestra Matriz Confusión
+muestrame
 NIL
 1
 T

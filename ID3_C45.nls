@@ -10,6 +10,11 @@ extensions [matrix]
 globals[
 aristaActual
 categoria
+verdaderoNegativo
+exactitud
+sensibilidad 
+especifidad 
+precisionAC
 ]
 
 breed [ID3:nodes ID3:node]
@@ -125,7 +130,7 @@ to-report ID3_mConfusion[df]
   let cabecera item 0 auxiliar 
   set auxiliar remove-item 0 auxiliar
   let i 0
-  let resultados[]
+  let resultados []
   repeat (length auxiliar) [ 
     let x reduce sentence item i auxiliar
     let z juntaCadena cabecera x
@@ -144,19 +149,77 @@ to-report ID3_mConfusion[df]
     ]
     set j j + 1
   ]
-  set varDiferentes (length varDiferentes)
+  ;print varDiferentes
+  let numVarDiferentes (length varDiferentes)
   ;añadimos los datos a la matriz de confusion
-  let m matrix:make-constant 2 2 0
+  let m matrix:make-constant (numVarDiferentes) (numVarDiferentes) 0
+
+  ;Asignación de valores a los diferentes resultados
+  let valoresMatriz []
+  print word "Valores de respuesta posibles: "varDiferentes
+  set j 0
+  repeat(numVarDiferentes)[
+    set valoresMatriz lput j valoresMatriz
+    set j j + 1
+  ]  
+  ;print valoresMatriz
   set j 0
   repeat (length listaProv ) [
-    ifelse ((item j listaProv) = (item j resultados) ) AND (item j listaProv = true) [matrix:set m 0 0 ((matrix:get m 0 0) + 1)][matrix:set m 0 1 ((matrix:get m 0 1) + 1)]
-    ifelse ((item j listaProv) = (item j resultados) ) AND (item j listaProv = false) [matrix:set m 1 0 ((matrix:get m 1 0) + 1)][matrix:set m 1 1 ((matrix:get m 1 1) + 1)]
-  ]  
-  ;listaProv = Valores reales
-  ;resultados = Valores Predichos
+ 
+    
+    let elemReal (position(word item j listaProv)varDiferentes)
+    let elemPredicho (position(word item j resultados)varDiferentes)
+    ;print elemReal
+    ;print elemPredicho
+    matrix:set m elemReal elemPredicho ((matrix:get m elemReal elemPredicho) + 1)
+    set j j + 1
+  
+    
+    
+    
+    ;print (word  "listaProv: "listaProv)
+    ;print (word  "resultados: "resultados)
+    ;print (word "j: " j " j de listaProv: " (item j listaProv) " j de resultados: " item j resultados " son iguales?: " ( (item j listaProv) = (item j resultados) ))
 
+  ] 
+  
   report m
 end  
+
+
+to mostrar-Matriz-Confusion [m]
+  
+  output-print "Matriz de confusión:\n"
+  let a matrix:get m 0 0 ;; what number is in row 1, column 2?
+  let b matrix:get m 0 1 
+  let c matrix:get m 1 0 
+  let d matrix:get m 1 1 
+  
+  set verdaderoNegativo  ( a / ( a + b ))
+  set exactitud          ( d / ( c + d ) )
+  set sensibilidad       ( d / ( d + c ) )
+  set especifidad        ( a / ( a +  b ) )
+  set precisionAC        ( (a + d) / ( a +  b + c + d) )
+   
+  
+  output-print (word  "│              │   negativo   │   positivo   │" )
+  output-print (word  "├──────────────┼──────────────┼──────────────┼──────────────┤" )
+  output-print (word  "│   negativo   │      "a"       │       "b"      │       "precision verdaderoNegativo 2"      │" )
+  output-print (word  "│              │              │              │      VN      │" )
+  output-print (word  "├──────────────┼──────────────┼──────────────┼──────────────┤" )
+  output-print (word  "│   positivo   │      "c"       │       "d"      │       "precision exactitud 2"      │" )
+  output-print (word  "│              │              │              │   exactitud  │" )
+  output-print (word  "├──────────────┼──────────────┼──────────────┼──────────────┤" )
+  output-print (word  "│              │      "precision sensibilidad 2"       │       "precision especifidad 2"      │      "precision  precisionAC 2"     │" )
+  output-print (word  "│              │ sensibilidad │  especifidad │   precision  │" )
+  output-print (word  "└──────────────┴──────────────┴──────────────┴──────────────┘" )
+  
+  print (word  "Verdadero Negativo: "precision verdaderoNegativo 2)
+  print (word  "Exactitud: "precision exactitud 2)
+  print (word  "Sensibilidad: "precision sensibilidad 2)
+  print (word  "Especifidad: "precision especifidad 2)
+  print (word  "Precision: "precision precisionAC 2)
+end 
 ;---------------------------------------------------------------
 
 ; ID3 Algorithm recursive.
@@ -363,5 +426,36 @@ to-report ID3:num2att [df Latt]
     set df DF:remove att df
   ]
   report df
+end
+
+
+to test2
+  
+  let m matrix:from-row-list [[0 5][0 5]]
+  output-print "Matriz de confusión:\n"
+  let a matrix:get m 0 0 ;; what number is in row 1, column 2?
+  let b matrix:get m 0 1 
+  let c matrix:get m 1 0 
+  let d matrix:get m 1 1 
+  
+  set verdaderoNegativo  ( a / ( a + b ))
+  set exactitud          ( d / ( c + d ) )
+  set sensibilidad       ( d / ( d + c ) )
+  set especifidad        ( a / ( a +  b ) )
+  set precisionAC        ( (a + d) / ( a +  b + c + d) )
+   
+  
+  output-print (word  "│              │   negativo   │   positivo   │" )
+  output-print (word  "├──────────────┼──────────────┼──────────────┼──────────────┤" )
+  output-print (word  "├   negativo   ┼      "a"       ┼       "b"      ┼       "verdaderoNegativo"      ┤" )
+  output-print (word  "├              ┼              ┼              ┼      VN      ┤" )
+  output-print (word  "├──────────────┼──────────────┼──────────────┼──────────────┤" )
+  output-print (word  "├   positivo   ┼      "c"       ┼       "d"      ┼       "exactitud"      ┤" )
+  output-print (word  "├              ┼              ┼              ┼   exactitud  ┤" )
+  output-print (word  "├──────────────┼──────────────┼──────────────┼──────────────┤" )
+  output-print (word  "├              ┼      "sensibilidad"       ┼       "especifidad"      ┼      "precisionAC"     ┤" )
+  output-print (word  "├              ┼ sensibilidad ┼  especifidad ┼   precision  ┤" )
+  output-print (word  "└──────────────┴──────────────┴──────────────┴──────────────┘" )
+
 end
 
