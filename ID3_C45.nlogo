@@ -25,8 +25,6 @@ to load-DF
 end
 
 to load-DF-Test
-  ; Clean everything
-
   set DataFrameTest DF:load user-file ;cargamos el fichero de datos
   if DataFrameTest != false [;si el archivo es válido empezamos a leer
     ; Print the dataset
@@ -37,17 +35,19 @@ end
 ; Demo function for ID3 Algorithm
 to main-ID3
   ct
-  if DataFrame != false
+
+  ifelse DataFrame != 0
   [
     ; Apply ID3 Algorithm
     set decision-tree ID3:ID3 DataFrame (last DF:Header DataFrame);le decimos al arbol de decision asignarse lo que devuelva id3 con el dataframe dado
     layout
-  ]
-
+  ][print "Carga un dataset primero"]
+  ifelse DataFrameTest != 0
+  [
   let matrizConfusion ID3_mConfusion DataFrameTest
   show matrizConfusion
   mostrar-Matriz-Confusion matrizConfusion
-
+  ][print "Ejecucion ID3 sin test"]
 end
 
 ; Demo function for C4.5 Algorithm
@@ -77,11 +77,11 @@ end
 GRAPHICS-WINDOW
 18
 10
-856
-721
+1038
+875
 -1
 -1
-21.3
+25.95
 1
 12
 1
@@ -102,10 +102,10 @@ ticks
 30.0
 
 BUTTON
-1039
-486
-1106
-531
+1224
+522
+1291
+567
 ID3
 main-ID3
 NIL
@@ -119,17 +119,17 @@ NIL
 1
 
 OUTPUT
-856
-10
-1498
-483
+1041
+46
+1683
+519
 11
 
 BUTTON
-1412
-17
-1475
-50
+1597
+53
+1660
+86
 Load
 load-df
 NIL
@@ -143,25 +143,25 @@ NIL
 1
 
 SLIDER
-859
-486
-1031
-519
+1044
+522
+1216
+555
 profundidad
 profundidad
 0
 100
-2.0
+3.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-859
-525
-1031
-558
+1044
+561
+1216
+594
 minimum_size
 minimum_size
 0
@@ -173,10 +173,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-1372
-51
-1475
-84
+1557
+87
+1660
+120
 NIL
 load-DF-Test
 NIL
@@ -190,10 +190,10 @@ NIL
 1
 
 MONITOR
-1501
-10
-1683
-55
+1686
+46
+1868
+91
 NIL
 precision verdaderoNegativo 2
 17
@@ -201,10 +201,10 @@ precision verdaderoNegativo 2
 11
 
 MONITOR
-1502
-60
-1683
-105
+1687
+96
+1868
+141
 NIL
 precision exactitud 2
 17
@@ -212,10 +212,10 @@ precision exactitud 2
 11
 
 MONITOR
-1502
-110
-1684
-155
+1687
+146
+1869
+191
 NIL
 precision sensibilidad 2
 17
@@ -223,10 +223,10 @@ precision sensibilidad 2
 11
 
 MONITOR
-1502
-160
-1685
-205
+1687
+196
+1870
+241
 NIL
 precision especifidad 2
 17
@@ -234,10 +234,10 @@ precision especifidad 2
 11
 
 MONITOR
-1502
-210
-1686
-255
+1687
+246
+1871
+291
 NIL
 precision precisionAc 2
 17

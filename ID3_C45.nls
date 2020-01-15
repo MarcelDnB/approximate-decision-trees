@@ -240,7 +240,7 @@ to-report ID3:ID3_aux [df]
     ]
   ]
   [
-    ;PRIMER PARÁMETRO
+    ;----------------------------------------------------------------------------------------------------PRIMER PARÁMETRO----------------------------------------------------------------------------------------------------
     if (length auxiliar1 < minimum_size) [
       
     ;Hago lo mismo que en el parámetro 1, todo basicamente para imprimir los resultados bien
@@ -269,8 +269,6 @@ to-report ID3:ID3_aux [df]
         ]
         set i i + 1
       ]
-      
-      
       ;Cuento en la lista provisional de antes cuantos de cada valor diferente hay en la lista, para poder hacer los porcentajes, es decir estoy contando cuantas filas con
       ;igual categoría tienen true y cuantas false en el ejemplo de antes (PlayGolf).
       let valores []
@@ -287,7 +285,7 @@ to-report ID3:ID3_aux [df]
       let iter 0
       let listaV [] ;para el evaluate luego
         repeat (length varDiferentes) [
-          set final (word "|" final (item iter varDiferentes) ": " (((length (item iter valores)) * 100 / length (reduce se valores) )) " %" "||") ; hago la cadena que mostrare debajo de cada nodo q esta truncado
+          set final (word "|" final (item iter varDiferentes) ": " (precision ((length (item iter valores)) * 100 / length (reduce se valores) ) 2) " %" "||") ; hago la cadena que mostrare debajo de cada nodo q esta truncado
           set listaV lput (((length (item iter valores)) * 100 / length (reduce se valores) )) listaV
           set iter iter + 1
         ]
@@ -299,11 +297,11 @@ to-report ID3:ID3_aux [df]
     ]
     report r
   ]
-    ;PRIMER PARÁMETRO
+    ;----------------------------------------------------------------------------------------------------PRIMER PARÁMETRO----------------------------------------------------------------------------------------------------
     let mx Max-GI df
    ; print (word "Categoria: " categoria2 "  " "arista: " aristaActual2)
     
-    ;SEGUNDO PARÁMETRO
+    ;----------------------------------------------------------------------------------------------------SEGUNDO PARÁMETRO----------------------------------------------------------------------------------------------------
     
     ;Si la profundidad es igual a "depth" + 1 significa que lo siguiente que salga en la rama tiene que ser una hoja, luego tenemos que hacer algo para que no siga
     ;poniendo mas categorias abajo ya que nos pasariamos del limite profundidad.
@@ -341,7 +339,6 @@ to-report ID3:ID3_aux [df]
         set i i + 1
       ]
       
-      
       ;Cuento en la lista provisional de antes cuantos de cada valor diferente hay en la lista, para poder hacer los porcentajes, es decir estoy contando cuantas filas con
       ;igual categoría tienen true y cuantas false en el ejemplo de antes (PlayGolf).
       let valores []
@@ -359,7 +356,7 @@ to-report ID3:ID3_aux [df]
       let iter 0
       let listaV [] ;para el evaluate luego
         repeat (length varDiferentes) [
-          set final (word "|" final (item iter varDiferentes) ": " (((length (item iter valores)) * 100 / length (reduce se valores) )) " %" "||") ; hago la cadena que mostrare debajo de cada nodo q esta truncado
+          set final (word "|" final (item iter varDiferentes) ": " (precision ((length (item iter valores)) * 100 / length (reduce se valores) ) 2) " %" "||") ; hago la cadena que mostrare debajo de cada nodo q esta truncado
           set listaV lput (((length (item iter valores)) * 100 / length (reduce se valores) )) listaV
           set iter iter + 1
         ]
@@ -370,7 +367,7 @@ to-report ID3:ID3_aux [df]
       set depth depth + 1
       ]
       report r]
-    ;SEGUNDO PARÁMETRO
+    ;----------------------------------------------------------------------------------------------------SEGUNDO PARÁMETRO----------------------------------------------------------------------------------------------------
     
     
     hatch-ID3:nodes 1

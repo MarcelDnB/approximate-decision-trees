@@ -4,3 +4,6 @@ Sunny,Mild,High,True,False
 Rainy,Mild,Normal,True,True
 Rainy,Mild,High,False,False
 Sunny,Mild,Normal,False,True
+Sunny,Hot,Normal,False,True
+Sunny,Hot,High,False,True
+Sunny,Hot,High,True,True
