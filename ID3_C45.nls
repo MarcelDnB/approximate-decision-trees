@@ -140,7 +140,7 @@ to-report ID3:ID3_aux [df]
     ]
   ]
   [
-    ;SEGUNDO PARÁMETRO
+    ;PRIMER PARÁMETRO
     if (length auxiliar1 < minimum_size) [
       
     ;Hago lo mismo que en el parámetro 1, todo basicamente para imprimir los resultados bien
@@ -195,11 +195,11 @@ to-report ID3:ID3_aux [df]
     ]
     report r
   ]
-    
+    ;PRIMER PARÁMETRO
     let mx Max-GI df
    ; print (word "Categoria: " categoria2 "  " "arista: " aristaActual2)
     
-    ;PRIMER PARÁMETRO
+    ;SEGUNDO PARÁMETRO
     
     ;Si la profundidad es igual a "depth" + 1 significa que lo siguiente que salga en la rama tiene que ser una hoja, luego tenemos que hacer algo para que no siga
     ;poniendo mas categorias abajo ya que nos pasariamos del limite profundidad.
@@ -262,7 +262,7 @@ to-report ID3:ID3_aux [df]
       set depth depth + 1
       ]
       report r]
-    ;PRIMER PARÁMETRO
+    ;SEGUNDO PARÁMETRO
     
     
     hatch-ID3:nodes 1
