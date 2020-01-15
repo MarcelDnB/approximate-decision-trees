@@ -54,17 +54,17 @@ to layout
 end
 
 to test
-  ask decision-tree [show ID3:evaluate [["Outlook" "Rainy"] [ "Temp" "Hot"] ["Humidity" "High"] ["Windy" "True"] ]]
+  ask decision-tree [show ID3:evaluate [["Outlook" "Sunny"] [ "Temp" "Hot"] ["Humidity" "Normal"] ["Windy" "True"] ]]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-53
-4
-1020
-824
+102
+10
+940
+721
 -1
 -1
-24.6
+21.3
 1
 12
 1
@@ -102,7 +102,7 @@ NIL
 1
 
 OUTPUT
-1196
+1253
 10
 1895
 483
@@ -154,15 +154,30 @@ NIL
 1
 
 SLIDER
-1701
-485
-1873
-518
+1335
+558
+1507
+591
 profundidad
 profundidad
 0
 100
-2.0
+3.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+1335
+597
+1507
+630
+minimum_size
+minimum_size
+0
+100
+0.0
 1
 1
 NIL
