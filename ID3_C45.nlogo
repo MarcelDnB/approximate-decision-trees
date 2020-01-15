@@ -6,6 +6,8 @@ __includes ["ID3_C45.nls" "LayoutSpace.nls" "DF.nls"]
 globals [
   decision-tree ; Node to store the produced Decision Tree
   DataFrame     ; Dataframe to work
+  DataFrameTest ; Dataframe to test
+  listaTest
 ]
 
 to load-DF
@@ -22,6 +24,16 @@ to load-DF
   ]
 end
 
+to load-DF-Test
+  ; Clean everything
+
+  set DataFrameTest DF:load user-file ;cargamos el fichero de datos
+  if DataFrameTest != false [;si el archivo es válido empezamos a leer
+    ; Print the dataset
+    output-print "Test Dataset:"
+    output-print DF:output DataFrameTest ;vamos imprimiendo las líneas
+  ]
+end
 ; Demo function for ID3 Algorithm
 to main-ID3
   ct
@@ -31,6 +43,11 @@ to main-ID3
     set decision-tree ID3:ID3 DataFrame (last DF:Header DataFrame);le decimos al arbol de decision asignarse lo que devuelva id3 con el dataframe dado
     layout
   ]
+
+  let matrizConfusion ID3_mConfusion DataFrameTest
+  show matrizConfusion
+  mostrar-Matriz-Confusion matrizConfusion
+
 end
 
 ; Demo function for C4.5 Algorithm
@@ -58,9 +75,9 @@ to test
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-102
+18
 10
-940
+856
 721
 -1
 -1
@@ -85,10 +102,10 @@ ticks
 30.0
 
 BUTTON
-1195
-485
-1262
-530
+1039
+486
+1106
+531
 ID3
 main-ID3
 NIL
@@ -102,45 +119,17 @@ NIL
 1
 
 OUTPUT
-1253
+856
 10
-1895
+1498
 483
 11
 
 BUTTON
-1262
-485
-1335
-530
-C4.5
-main-C4.5 (read-from-string Numerical-attributes)
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-INPUTBOX
-1335
-485
-1698
-554
-Numerical-attributes
-[\"AGE\" \"BILIRUBIN\" \"ALK PHOSPHATE\" \"SGOT\" \"ALBUMIN\" \"PROTIME\"]
-1
-0
-String
-
-BUTTON
-1811
-16
-1874
-49
+1412
+17
+1475
+50
 Load
 load-df
 NIL
@@ -154,25 +143,25 @@ NIL
 1
 
 SLIDER
-1335
-558
-1507
-591
+859
+486
+1031
+519
 profundidad
 profundidad
 0
 100
-3.0
+2.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-1335
-597
-1507
-630
+859
+525
+1031
+558
 minimum_size
 minimum_size
 0
@@ -182,6 +171,78 @@ minimum_size
 1
 NIL
 HORIZONTAL
+
+BUTTON
+1372
+51
+1475
+84
+NIL
+load-DF-Test
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+MONITOR
+1501
+10
+1683
+55
+NIL
+precision verdaderoNegativo 2
+17
+1
+11
+
+MONITOR
+1502
+60
+1683
+105
+NIL
+precision exactitud 2
+17
+1
+11
+
+MONITOR
+1502
+110
+1684
+155
+NIL
+precision sensibilidad 2
+17
+1
+11
+
+MONITOR
+1502
+160
+1685
+205
+NIL
+precision especifidad 2
+17
+1
+11
+
+MONITOR
+1502
+210
+1686
+255
+NIL
+precision precisionAc 2
+17
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
