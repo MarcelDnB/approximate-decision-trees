@@ -378,11 +378,3 @@ to-report ID3:num2att [df Latt]
   ]
   report df
 end
-
-;to ID3:confusionmatrix
-;  ask ID3:nodes [
-;  print (word "Tipo de nodo: " ID3:node-type " " "Valor: " ID3:value)
-;  
-;  ]
-;end
-
