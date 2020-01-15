@@ -1,7 +1,7 @@
 ;;----------------------------------- ID3 -----------------------------------------
 ;; Library to create Decision Trees by using ID3 algorithm
 ;;---------------------------------------------------------------------------------
-extensions [matrix]
+extensions [matrix rnd]
 
 ;; It works on datasets given as Dataframes (rows of data with some fixed structure 
 ;; given by a header). In this version it works only with categorical (not numerical)
@@ -27,6 +27,7 @@ ID3:nodes-own [
                 ;   0 -> Attribute to classify
                 ;   1 -> Splitting Attribute 
                 ;   2 -> Classification result
+  ID3:porcentaje;   Indica el porcentaje en caso de que lo haya
   depth         ; For use with LayoutSpace.nls
 ]
 
@@ -106,6 +107,8 @@ to-report ID3:ID3 [df att-target]
   set df DF:remove att-target df
   set df DF:add-column att-target df (bf target)
 
+  ask ID3:nodes [set ID3:porcentaje 0] ;para poder comparar luego si es distinto de 0 y tener en cuenta el porcentaje
+  
   create-ID3:nodes 1 [
     set ID3:node-type 0
     set ID3:value (last first df)
@@ -117,6 +120,10 @@ to-report ID3:ID3 [df att-target]
 ;  ID3:confusionmatrix
   report rep
 end
+
+to-report juntaCadena[lis1 lis2]
+report (map [[x y] -> list x y] lis1 lis2)
+end  
 
 ; ID3 Algorithm recursive.
 ;  Diferenciate between 
@@ -185,11 +192,15 @@ to-report ID3:ID3_aux [df]
       set ID3:node-type 2
       let final ""
       let iter 0
+      let listaV [] ;para el evaluate luego
         repeat (length varDiferentes) [
           set final (word "|" final (item iter varDiferentes) ": " (((length (item iter valores)) * 100 / length (reduce se valores) )) " %" "||") ; hago la cadena que mostrare debajo de cada nodo q esta truncado
+          set listaV lput (((length (item iter valores)) * 100 / length (reduce se valores) )) listaV
           set iter iter + 1
         ]
+      let resul juntaCadena varDiferentes listaV ;contiene el porcentaje junto al tipo de retorno pej [20 verde] [30 azul] [50 rojo]..  
       set ID3:value final
+      set ID3:porcentaje resul
       set r self
       set depth depth + 1
     ]
@@ -253,11 +264,15 @@ to-report ID3:ID3_aux [df]
       set ID3:node-type 2
       let final ""
       let iter 0
+      let listaV [] ;para el evaluate luego
         repeat (length varDiferentes) [
           set final (word "|" final (item iter varDiferentes) ": " (((length (item iter valores)) * 100 / length (reduce se valores) )) " %" "||") ; hago la cadena que mostrare debajo de cada nodo q esta truncado
+          set listaV lput (((length (item iter valores)) * 100 / length (reduce se valores) )) listaV
           set iter iter + 1
         ]
+      let resul juntaCadena varDiferentes listaV ;contiene el porcentaje junto al tipo de retorno pej [20 verde] [30 azul] [50 rojo]..
       set ID3:value final
+      set ID3:porcentaje resul
       set r self
       set depth depth + 1
       ]
@@ -334,7 +349,13 @@ to-report ID3:evaluate [datum]
   ifelse ID3:node-type = 0
   [report [ID3:evaluate datum] of one-of out-ID3:link-neighbors]
   [ifelse ID3:node-type = 2
-    [report ID3:value]
+    [
+      if ID3:porcentaje != 0 [
+        let valorElegido first rnd:weighted-one-of-list ID3:porcentaje last
+        print (valorElegido)
+        report valorElegido
+      ]
+      report ID3:value]
     [
       let val ID3:value-of ID3:value datum
       let next-branch my-out-ID3:links with [ID3:att_value = val]
