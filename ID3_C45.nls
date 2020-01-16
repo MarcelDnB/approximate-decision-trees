@@ -133,21 +133,29 @@ end
 to-report ID3_mConfusion[df]
   let tam DF:size DataFrameTest
   let auxiliar DF:first (first tam) DataFrameTest
-
+;-------------------------------------------------------------------------
+  let ult ((length (item  0 df)) - 1) ;numero de categorias a clasificar
+  let listCategorias [] 
+  foreach df [x ->
+   set listCategorias lput (item ult x) listCategorias
+  ] 
+  set listCategorias remove-duplicates listCategorias 
+  let numCategorias (length listCategorias) - 1  ;numero de elementos de clasificacion
+;-------------------------------------------------------------------------
+  
+  set listCategorias remove-item 0 listCategorias ;lista con las cateogrias de los datos
   ;quito la parte de los nombres q indican de q es cada columna, nos interesan solo las filas, no necesitamos los nombres de las columnas
   let cabecera item 0 auxiliar 
+  print cabecera
   set auxiliar remove-item 0 auxiliar
   let i 0
   let resultados[]
   repeat (length auxiliar) [ 
     let x reduce sentence item i auxiliar
-    ;print (x)
     let z juntaCadena cabecera x
-    ;print (z)
-    ask decision-tree [ set resultados lput (ID3:evaluate z) resultados]
+    ask decision-tree [ set resultados lput (ID3:evaluate (juntaCadena cabecera x)) resultados]
     set i i + 1 
   ]
-  ;print (resultados)
   let listaProv []
       foreach auxiliar [x -> 
       set listaProv lput (word last x) listaProv
@@ -161,29 +169,41 @@ to-report ID3_mConfusion[df]
     set j j + 1
   ]
   set varDiferentes (length varDiferentes)
+  
+  
   ;añadimos los datos a la matriz de confusion
-  let m matrix:make-constant 2 2 0
+  let m matrix:make-constant numCategorias numCategorias 0
+  
+  let a "false" ;para el elemento de x predicho
+  let b "false" ;para el elemento de x real
+  let c 0 ;para la posicion de x predicho
+  let d 0 ;para la posicion de x real
+
+  print (word "numCategorias:"numCategorias)
   set j 0
   repeat (length listaProv ) [
-   
-    ifelse ( ((item j listaProv) = (item j resultados) ) AND (item j listaProv = "si") ) [matrix:set m 0 1 ((matrix:get m 0 1) + 1)][matrix:set m 0 0 ((matrix:get m 0 0) + 1)]
-    ifelse ( ((item j listaProv) = (item j resultados) ) AND (item j listaProv = "no") ) [matrix:set m 1 0 ((matrix:get m 1 0) + 1)][matrix:set m 1 1 ((matrix:get m 1 1) + 1)]
     
+    set a (item j listaProv)
+    set b (item j resultados)
     
-    ;print (word  "listaProv: "listaProv)
-    ;print (word  "resultados: "resultados)
-    ;print (word "j: " j " j de listaProv: " (item j listaProv) " j de resultados: " item j resultados " son iguales?: " ( (item j listaProv) = (item j resultados) ))
+    set c (position a listCategorias)
+    set d (position b listCategorias)
+    
+    matrix:set m d c ((matrix:get m d c) + 1)
+  
     set j j + 1
   ] 
 
   report m
-end  
+end
 
 
 
 to mostrar-Matriz-Confusion [m]
   
   output-print "Matriz de confusión:\n"
+  
+  ifelse (first matrix:dimensions m = 2) [
   let a matrix:get m 0 0 ;; what number is in row 1, column 2?
   let b matrix:get m 0 1 
   let c matrix:get m 1 0 
@@ -213,7 +233,19 @@ to mostrar-Matriz-Confusion [m]
   print (word  "Sensibilidad: "precision sensibilidad 2)
   print (word  "Especifidad: "precision especifidad 2)
   print (word  "Precision: "precision precisionAC 2)
-end 
+  ][
+    
+  output-print matrix:pretty-print-text m
+    
+  set precisionAC  0      ;( (a + d) / ( a +  b + c + d) )
+    
+  output-print (word "\nPrecision: "precisionAC)
+  ]
+  
+  
+  
+  
+end
 
 
 
