@@ -472,7 +472,7 @@ to-report ID3:evaluate [datum]
   [report [ID3:evaluate datum] of one-of out-ID3:link-neighbors]
   [ifelse ID3:node-type = 2
     [
-      if ID3:porcentaje != 0 [
+      if ID3:porcentaje != 0 and (not empty? ID3:porcentaje) [
         let valorElegido first rnd:weighted-one-of-list ID3:porcentaje last
         print (valorElegido)
         report valorElegido
