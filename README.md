@@ -3,10 +3,10 @@
 3. [¿Como lo solucionamos?](#soluciones-propuestas)
 4. [¿Como se ha implementado la solución?](#implementación-de-la-solución-propuesta)
    - [Establecer tamaño mínimo de datos](#condicionar-la-formación-del-árbol-de-decisión-según-la-cantidad-de-datos)
-   - [Controlar la profundidad](#condicionar-la-formación-del-árbol-de-decisión-según-la-profundidad del-árbol)
+   - [Controlar la profundidad](#condicionar-la-formación-del-árbol-de-decisión-según-la-profundidad-del-árbol)
 5. [Matriz de confusión](#implementación-de-la-matriz-de-confusión)
 6. [Ejemplos gráficos](#más-ejemplos)
-7. [Bibliografía](#Bibliografía)
+7. [Bibliografía](#bibliografía)
 
 
 
@@ -21,7 +21,7 @@ Un **árbol de decisión** está formado por **nodos de decisión** y **nodos de
 * Un **nodo de decisión** esta asociado a los **atributos** y a la vez éste tiene varias **ramas** que salen de el que van a representar los **distintos valores que puede tomar el atributo**.
 * Un **nodo** **repuesta** es una **hoja** que devuelve la decisión
 
-![](C:\Users\Marcel\OneDrive - UNIVERSIDAD DE SEVILLA\GitHub\approximate-decision-trees\images\ID3_C45 view.png)
+![](images\ID3_C45 view.png)
 
 
 
@@ -41,19 +41,19 @@ Para **intentar lidiar** con el sobreajuste vamos a crear 2 parámetros que infl
 
 ### Ejemplo 1
 
-![](C:\Users\Marcel\OneDrive - UNIVERSIDAD DE SEVILLA\GitHub\approximate-decision-trees\images\datos.jpg)
+![](images\datos.jpg)
 
 * El **primer parámetro** hará referencia a la cantidad de información mínima que se necesita en cualquiera de las ramas para seguir desarrollando hacia abajo, si no se llega a este tamaño mínimo que nosotros pongamos esa rama dará lugar a un nodo hoja con el resultado expresado en porcentaje. Este porcentaje se consigue viendo sobre cada entrada correspondiente a una rama en concreto y viendo el resultado que obtenemos como respuesta.
 
   Con **tamaño mínimo** 6 si una rama dada no contiene al menos 6 entradas de datos, devolvemos los porcentajes correspondientes a la respuesta que obtenemos hasta esa parte.
 
-  ![](C:\Users\Marcel\OneDrive - UNIVERSIDAD DE SEVILLA\GitHub\approximate-decision-trees\images\ID3_C45 view2.png)
+  ![](images\ID3_C45 view2.png)
 
 * El **segundo parámetro** indicará la **profundidad máxima** del árbol, de forma que cuando una rama se expanda hasta llegar al límite puesto por el parámetro dará un resultado en forma de porcentaje al igual que en el parámetro anterior.
 
   Con **profundidad** 2 estamos obligando a las ramas a tener hasta profundidad 2 del árbol, lo que significa que cortamos lo que seguiría de la rama y colocamos directamente los porcentajes al igual que el primer parámetro.
 
-![](C:\Users\Marcel\OneDrive - UNIVERSIDAD DE SEVILLA\GitHub\approximate-decision-trees\images\ID3_C45 view3.png)
+![](images\ID3_C45 view3.png)
 
 
 
@@ -112,17 +112,17 @@ La diagonal principal siempre contendrá la suma de todas las predicciones corre
 
 Para mostrar otro ejemplo vamos a considerar los siguientes datos:
 
-![](C:\Users\Marcel\OneDrive - UNIVERSIDAD DE SEVILLA\GitHub\approximate-decision-trees\images\datos1.jpg)
+![](images\datos1.jpg)
 
 **Profundidad  2 y tamaño mínimo 5.**
 
-![](C:\Users\Marcel\OneDrive - UNIVERSIDAD DE SEVILLA\GitHub\approximate-decision-trees\images\ID3_C45 view4.png)
+![](images\ID3_C45 view4.png)
 
 ### Ejemplo 3
 
 Para mostrar otro ejemplo vamos a considerar los siguientes datos:
 
-![](C:\Users\Marcel\OneDrive - UNIVERSIDAD DE SEVILLA\GitHub\approximate-decision-trees\images\datos2.jpg)
+![](images\datos2.jpg)
 
 
 
@@ -130,7 +130,7 @@ Para mostrar otro ejemplo vamos a considerar los siguientes datos:
 
 **Tamaño mínimo 4 y profundidad ilimitada.**
 
-![](C:\Users\Marcel\OneDrive - UNIVERSIDAD DE SEVILLA\GitHub\approximate-decision-trees\images\ID3_C45 view5.png)
+![](images\ID3_C45 view5.png)
 
 
 
@@ -138,7 +138,7 @@ Para mostrar otro ejemplo vamos a considerar los siguientes datos:
 
 **Tamaño indefinido y profundidad 3.**
 
-![](C:\Users\Marcel\OneDrive - UNIVERSIDAD DE SEVILLA\GitHub\approximate-decision-trees\images\esquemaOtro.jpg)
+![](images\esquemaOtro.jpg)
 
 
 
