@@ -12,7 +12,7 @@
 
 # Definición y funcionamiento del algoritmo ID3
 
-ID3 es un algoritmo inventado por Ross Quinlan y se usa para generar árboles de decisión a partir de un conjunto de datos. En cada iteración del algoritmo itera sobre cada atributo no usado aun y calcula la entropía o la ganancia de información de ese atributo, posteriormente selecciona el atributo con la menor entropía, o en el caso de la ganancia de información el mayor.
+ID3 es un algoritmo inventado por Ross Quinlan y se usa para generar árboles de decisión a partir de un conjunto de datos. En cada iteración del algoritmo itera sobre cada atributo no usado aun y **calcula la entropía o la ganancia de información de ese atributo**, posteriormente **selecciona el atributo con la menor entropía**, o en el caso de la ganancia de información el mayor.
 
 A partir de ciertos **ejemplos observados en el mundo real**, y para cada uno de ellos tenemos una clasificación observada. ID3 consiste en un **árbol de decisión** que explique cada instancia de la secuencia de entrada de la manera más compacta posible a partir de una tabla de inducción y de forma que también en cada momento elige el mejor atributo dependiendo de una determinada heurística.
 
@@ -89,13 +89,13 @@ Lo único que vamos a tener que cambiar es la condición con la que comprobamos 
 
 ## Implementación de la matriz de confusión
 
-La matriz de confusión es una tabla que nos muestra el rendimiento de nuestro algoritmo, ya que comparamos los resultados que nos da con los valores reales de los datos, es decir, con la respuesta correcta. 
+La **matriz de confusión** es una **tabla** que nos **muestra el rendimiento de nuestro algoritmo**, ya que comparamos los resultados que nos da con los valores reales de los datos, es decir, con la respuesta correcta. 
 
-La matriz consta de las filas que se nombran según las clases reales y las columnas según las clases previstas por el modelo, de esta forma en el cuerpo de la matriz vamos a contar cuantos casos hemos acertado y cuantos hemos confundido por otros, al tener la matriz n x n, siendo n el numero de posibles respuestas vamos a poder ver perfectamente que respuestas hemos confundido.
+La matriz consta de las filas que se nombran según las **respuestas reales** y las columnas según las **respuestas previstas** por el modelo, de esta forma en el cuerpo de la matriz vamos a contar cuantos casos hemos acertado y cuantos hemos confundido por otros, al tener la matriz n x n, siendo n el numero de posibles respuestas vamos a poder ver perfectamente que respuestas hemos confundido.
 
-La diagonal principal siempre contendrá la suma de todas las predicciones correctas mientras que las otras celdas indicarán predicciones fallidas, al representar tanta información dentro de la matriz, ya que vemos todos los casos en los que se ha confundido, vamos a poder sacar diferentes tipos de error. Para ello además de tener una representación muy completa de como se ha desenvuelto nuestro algoritmo vamos a  calcular una serie de métricas que serán bastante útiles.
+La **diagonal principal siempre contendrá la suma de todas las predicciones correctas** mientras que las **otras celdas indicarán predicciones fallidas**, al representar tanta información dentro de la matriz, ya que vemos todos los casos en los que se ha confundido, vamos a poder sacar diferentes tipos de error. Para ello además de tener una representación muy completa de como se ha desenvuelto nuestro algoritmo vamos a  calcular una serie de métricas que serán bastante útiles.
 
-* **Precisión **se refiere a la dispersión del conjunto de valores obtenidos a partir de mediciones repetidas de una magnitud. Cuanto menor es la dispersión mayor la precisión. Se representa por la proporción entre el número de predicciones correctas (tanto positivas como negativas) y el total de predicciones.
+* **Precisión** se refiere a la dispersión del conjunto de valores obtenidos a partir de mediciones repetidas de una magnitud. Cuanto menor es la dispersión mayor la precisión. Se representa por la proporción entre el número de predicciones correctas (tanto positivas como negativas) y el total de predicciones.
 * La **sensibilidad y la especificidad** son dos valores que nos indican la capacidad de nuestro estimador para discriminar los casos positivos, de los negativos. La sensibilidad es la fracción de verdaderos positivos, mientras que la especificidad, es la fracción de verdaderos negativos.
 * **Exactitud** se refiere a lo cerca que está el resultado de una medición del valor verdadero. Se representa por la proporción entre los positivos reales predichos por el algoritmo y todos los casos positivos.
 * La **Tasa de Verdaderos Negativos** se trata de los casos negativos que el algoritmo ha clasificado correctamente.
