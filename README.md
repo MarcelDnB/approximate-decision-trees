@@ -6,7 +6,7 @@
    - [Controlar la profundidad](#condicionar-la-formación-del-árbol-de-decisión-según-la-profundidad-del-árbol)
 5. [Matriz de confusión](#implementación-de-la-matriz-de-confusión)
 6. [Ejemplos gráficos](#más-ejemplos)
-7. [Bibliografía](#Bibliografía)
+7. [Bibliografía](#bibliografía)
 
 
 
