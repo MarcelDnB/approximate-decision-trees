@@ -21,7 +21,7 @@ Un **árbol de decisión** está formado por **nodos de decisión** y **nodos de
 * Un **nodo de decisión** esta asociado a los **atributos** y a la vez éste tiene varias **ramas** que salen de el que van a representar los **distintos valores que puede tomar el atributo**.
 * Un **nodo** **repuesta** es una **hoja** que devuelve la decisión
 
-![](images\ID3_C45 view.png)
+![](images\ID3_C45view.png)
 
 
 
@@ -47,13 +47,13 @@ Para **intentar lidiar** con el sobreajuste vamos a crear 2 parámetros que infl
 
   Con **tamaño mínimo** 6 si una rama dada no contiene al menos 6 entradas de datos, devolvemos los porcentajes correspondientes a la respuesta que obtenemos hasta esa parte.
 
-  ![](images\ID3_C45 view2.png)
+  ![](images\ID3_C45view2.png)
 
 * El **segundo parámetro** indicará la **profundidad máxima** del árbol, de forma que cuando una rama se expanda hasta llegar al límite puesto por el parámetro dará un resultado en forma de porcentaje al igual que en el parámetro anterior.
 
   Con **profundidad** 2 estamos obligando a las ramas a tener hasta profundidad 2 del árbol, lo que significa que cortamos lo que seguiría de la rama y colocamos directamente los porcentajes al igual que el primer parámetro.
 
-![](images\ID3_C45 view3.png)
+![](images\ID3_C45view3.png)
 
 
 
@@ -116,7 +116,7 @@ Para mostrar otro ejemplo vamos a considerar los siguientes datos:
 
 **Profundidad  2 y tamaño mínimo 5.**
 
-![](images\ID3_C45 view4.png)
+![](images\ID3_C45view4.png)
 
 ### Ejemplo 3
 
@@ -130,7 +130,7 @@ Para mostrar otro ejemplo vamos a considerar los siguientes datos:
 
 **Tamaño mínimo 4 y profundidad ilimitada.**
 
-![](images\ID3_C45 view5.png)
+![](images\ID3_C45view5.png)
 
 
 
