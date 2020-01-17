@@ -152,7 +152,7 @@ http://www.cs.us.es/~fsancho/?e=104
 
 https://www.nebrija.es/~cmalagon/inco/apuntes_mios/ejemplo_ID3_clase.pdf
 
-[http://www.itnuevolaredo.edu.mx/takeyas/Apuntes/Inteligencia%20Artificial/Apuntes/IA/ID3.pdf](http://www.itnuevolaredo.edu.mx/takeyas/Apuntes/Inteligencia Artificial/Apuntes/IA/ID3.pdf)
+http://www.itnuevolaredo.edu.mx/takeyas/Apuntes/Inteligencia%20Artificial/Apuntes/IA/ID3.pdf
 
 https://es.slideshare.net/FernandoCaparrini/arboles-decision-id3
 
