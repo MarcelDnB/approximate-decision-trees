@@ -75,13 +75,13 @@ to test
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-18
+3
 10
-1038
-875
+822
+705
 -1
 -1
-25.95
+20.8
 1
 12
 1
@@ -149,9 +149,9 @@ SLIDER
 555
 profundidad
 profundidad
-0
+2
 100
-3.0
+2.0
 1
 1
 NIL
@@ -194,7 +194,7 @@ MONITOR
 46
 1868
 91
-NIL
+VN
 precision verdaderoNegativo 2
 17
 1
@@ -205,7 +205,7 @@ MONITOR
 96
 1868
 141
-NIL
+Exactitud
 precision exactitud 2
 17
 1
@@ -216,7 +216,7 @@ MONITOR
 146
 1869
 191
-NIL
+Sensibilidad
 precision sensibilidad 2
 17
 1
@@ -227,7 +227,7 @@ MONITOR
 196
 1870
 241
-NIL
+Especificidad
 precision especifidad 2
 17
 1
@@ -238,7 +238,7 @@ MONITOR
 246
 1871
 291
-NIL
+Precisión
 precision precisionAc 2
 17
 1

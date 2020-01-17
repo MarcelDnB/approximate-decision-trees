@@ -100,9 +100,11 @@ La **diagonal principal siempre contendrá la suma de todas las predicciones cor
 * **Exactitud** se refiere a lo cerca que está el resultado de una medición del valor verdadero. Se representa por la proporción entre los positivos reales predichos por el algoritmo y todos los casos positivos.
 * La **Tasa de Verdaderos Negativos** se trata de los casos negativos que el algoritmo ha clasificado correctamente.
 
+Para construir la matriz de confusión vamos a necesitar un conjunto de datos nuevos sobre los que ir probando el algoritmo. Una vez cargado dichos datos, basta con ir comparando lo que nos devuelve el algoritmo con el valor real dicha función se llama `ID3_mConfusion` y nos devuelve la matriz en crudo.
 
+Para mostrarlo por pantalla, en caso de que la matriz tenga solo 2 tipos de respuestas hemos creado una forma (mas o menos) bonita de representarlo sin embargo hemos decidido que en caso de que la matriz sea de un tamaño mayor al de 2x2, es decir, que haya mas de 2 tipos diferentes de respuesta devolvemos la matriz en crudo ya que por el contrario habría muchos descuadres, la función encargada de ello se llama `mostrar-Matriz-Confusion`.
 
-
+Cuando tenemos que truncar el árbol y devolvemos los porcentajes según hemos visto en el caso de los parámetros creados, anteriormente mencionados, el algoritmo tiene que elegir que respuesta dar según los porcentajes que haya. Para ello hemos utilizado la extensión `Rnd` de Netlogo. Para ello hemos creado un atributo mas para los nodos, el que mencioné que íbamos a utilizar en la matriz de confusión `ID3:porcentaje`. En este atributo vamos a meter el valor de los n porcentajes junto a las n posibles respuestas y se lo pasamos a una función que nos da una respuesta aleatoria teniendo en cuenta los porcentajes que hay junto a la respuesta. Por ejemplo, para 2 tipos de respuesta: [[verdadero 0.20] [falso 0.70]]
 
 
 

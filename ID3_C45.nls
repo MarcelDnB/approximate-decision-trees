@@ -9,16 +9,15 @@ extensions [matrix rnd]
 
 ;; Family of nodes that will build the Decision Tree
 globals[
-aristaActual
-categoria
-aristaActual2
-categoria2
-auxiliar1
-verdaderoNegativo
-exactitud
-sensibilidad 
-especifidad 
-precisionAC
+aristaActual ;Se guarda la arista de la iteración actual
+categoria ;Se guarda la categoria de la iteración actual
+filaActual ;Con las dos variables anteriores conseguimos la fila actual
+control ;Para controlar la primera iteración del primer parámetro
+verdaderoNegativo ;Métrica de la matriz  
+exactitud ;Métrica de la matriz
+sensibilidad ;Métrica de la matriz
+especifidad ;Métrica de la matriz
+precisionAC ;Métrica de la matriz
 ]
 
 breed [ID3:nodes ID3:node]
@@ -117,7 +116,8 @@ to-report ID3:ID3 [df att-target]
   create-ID3:nodes 1 [
     set ID3:node-type 0
     set ID3:value (last first df)
-    set auxiliar1 [1 2 3 4 5 6 7 78 8 8 8 8 8 8]
+    set filaActual [1]
+    set control 0
     create-ID3:link-to (ID3:ID3_aux df) [set ID3:att_value ""]
     set rep self
     set depth 1
@@ -130,9 +130,15 @@ to-report juntaCadena[lis1 lis2]
 report (map [[x y] -> list x y] lis1 lis2)
 end  
 
+
+
+;----------------------------------------------------------------------------MATRIZ DE CONFUSIÓN----------------------------------------------------------------------------ABAJO
+
+
+
 to-report ID3_mConfusion[df]
   let tam DF:size DataFrameTest
-  let auxiliar DF:first (first tam) DataFrameTest
+  let auxiliarMat DF:first (first tam) DataFrameTest
 ;-------------------------------------------------------------------------
   let ult ((length (item  0 df)) - 1) ;numero de categorias a clasificar
   let listCategorias [] 
@@ -145,19 +151,18 @@ to-report ID3_mConfusion[df]
   
   set listCategorias remove-item 0 listCategorias ;lista con las cateogrias de los datos
   ;quito la parte de los nombres q indican de q es cada columna, nos interesan solo las filas, no necesitamos los nombres de las columnas
-  let cabecera item 0 auxiliar 
-  print cabecera
-  set auxiliar remove-item 0 auxiliar
+  let cabecera item 0 auxiliarMat
+  set auxiliarMat remove-item 0 auxiliarMat
   let i 0
   let resultados[]
-  repeat (length auxiliar) [ 
-    let x reduce sentence item i auxiliar
+  repeat (length auxiliarMat) [ 
+    let x reduce sentence item i auxiliarMat
     let z juntaCadena cabecera x
     ask decision-tree [ set resultados lput (ID3:evaluate (juntaCadena cabecera x)) resultados]
     set i i + 1 
   ]
   let listaProv []
-      foreach auxiliar [x -> 
+      foreach auxiliarMat [x -> 
       set listaProv lput (word last x) listaProv
       ]
   let j 0
@@ -197,13 +202,11 @@ to-report ID3_mConfusion[df]
   report m
 end
 
-
-
 to mostrar-Matriz-Confusion [m]
   
   output-print "Matriz de confusión:\n"
   
-  ifelse (first matrix:dimensions m = 2) [
+  ifelse (first matrix:dimensions m = 2) [ ;Si la matriz tiene dimension mayor que 2, vamos a representar los valores en una matriz simple
   let a matrix:get m 0 0 ;; what number is in row 1, column 2?
   let b matrix:get m 0 1 
   let c matrix:get m 1 0 
@@ -231,18 +234,44 @@ to mostrar-Matriz-Confusion [m]
   print (word  "Verdadero Negativo: "precision verdaderoNegativo 2)
   print (word  "Exactitud: "precision exactitud 2)
   print (word  "Sensibilidad: "precision sensibilidad 2)
-  print (word  "Especificidad: "precision especifidad 2)
+  print (word  "Especifidad: "precision especifidad 2)
   print (word  "Precision: "precision precisionAC 2)
   ][
     
   output-print matrix:pretty-print-text m
     
-  set precisionAC  0      ;( (a + d) / ( a +  b + c + d) )
     
-  output-print (word "\nPrecision: "precisionAC)
+  let sumaDiagonal 0
+  let sumaTotal 0
+  let i 0
+  let j 0
+  repeat (first matrix:dimensions m )[
+     repeat (first matrix:dimensions m )[
+       set sumaTotal ((matrix:get m j i) + sumaTotal)
+      if(i = j)[ set sumaDiagonal ((matrix:get m j i) + sumaDiagonal) ]
+      
+  ;    print (word "i: "i "j: "j)
+      set j j + 1
+    ] 
+    set i i + 1
+    set j 0
   ]
-end
+  
+  let precisionACParaN (sumaDiagonal / sumaTotal)
+  ;print (word "precisionACParaN: "precisionACParaN)
+    
+  output-print (word "\nPrecision: "precision precisionACParaN 2)
+  ]
+  
+  
+  
+  
+end 
 
+
+
+
+;----------------------------------------------------------------------------MATRIZ DE CONFUSIÓN----------------------------------------------------------------------------ARRIBA
 
 
 
@@ -262,21 +291,27 @@ to-report ID3:ID3_aux [df]
     [
       set ID3:node-type 2
       set ID3:value (word last last df)
-      ;set categoria2 (word last last df)
+      ;set categoria (word last last df)
       set r self
       set depth depth + 1
     ]
   ]
   [
-    ;----------------------------------------------------------------------------------------------------PRIMER PARÁMETRO----------------------------------------------------------------------------------------------------
-    if (length auxiliar1 < minimum_size) [
+    
+    
+    
+    ;----------------------------------------------------------------------------------------------------PRIMER PARÁMETRO----------------------------------------------------------------------------------------------------ABAJO
+    
+    
+    
+    if (length filaActual < minimum_size and control = 1) [
       
     ;Hago lo mismo que en el parámetro 1, todo basicamente para imprimir los resultados bien
     let listaProv []
       ;Pongo en una lista provisional el valor de retorno de estas categorias truncadas, con esto me refiero que cojo la pregunta general, es decir, la de ¿Se juega a golf?
       ;que corresponde con la ultima columna en los datos "PlayGolf" y puede ser true o false. En todos los datos vamos a cuestionar siempre la ultima columna, con esto quiero
       ;decir, que siempre la pregunta general va a ser la ultima columna de los datos.
-      foreach auxiliar1 [x -> 
+      foreach filaActual [x -> 
       set listaProv lput (word last x) listaProv 
       ]
       
@@ -325,30 +360,32 @@ to-report ID3:ID3_aux [df]
     ]
     report r
   ]
-    ;----------------------------------------------------------------------------------------------------PRIMER PARÁMETRO----------------------------------------------------------------------------------------------------
+    ;print (word categoria "  categoria")
+    ;print "\n"
+    ;print (word categoria "  categoria")
+    
+    ;----------------------------------------------------------------------------------------------------PRIMER PARÁMETRO----------------------------------------------------------------------------------------------------ARRIBA
+    
+    
+    
     let mx Max-GI df
-   ; print (word "Categoria: " categoria2 "  " "arista: " aristaActual2)
     
-    ;----------------------------------------------------------------------------------------------------SEGUNDO PARÁMETRO----------------------------------------------------------------------------------------------------
     
+    ;if (control = 0) [
+    ;set filaActual (DF:filter-att DataFrame categoria aristaActual)
+    ;set filaActual remove-item 0 filaActual
+    ;]
+    ;----------------------------------------------------------------------------------------------------SEGUNDO PARÁMETRO----------------------------------------------------------------------------------------------------ABAJO
     ;Si la profundidad es igual a "depth" + 1 significa que lo siguiente que salga en la rama tiene que ser una hoja, luego tenemos que hacer algo para que no siga
     ;poniendo mas categorias abajo ya que nos pasariamos del limite profundidad.
-    if (profundidad - 1 = depth ) [
-      
-      ;Contiene las filas de las categorias truncadas que corresponden a una arista actual en el caso de ejecutar el data de "PlayGolf"
-      ;por aqui van a pasar las filas correspondientes a Rainy y Sunny ya que hemos tenido que truncar estas.
-      let auxiliar (DF:filter-att DataFrame categoria aristaActual) 
-      ;quito la parte de los nombres q indican de q es cada columna, nos interesan solo las filas, no necesitamos los nombres de las columnas
-      set auxiliar remove-item 0 auxiliar 
-      
+    if (profundidad - 1 = depth) [
       let listaProv []
       ;Pongo en una lista provisional el valor de retorno de estas categorias truncadas, con esto me refiero que cojo la pregunta general, es decir, la de ¿Se juega a golf?
       ;que corresponde con la ultima columna en los datos "PlayGolf" y puede ser true o false. En todos los datos vamos a cuestionar siempre la ultima columna, con esto quiero
       ;decir, que siempre la pregunta general va a ser la ultima columna de los datos.
-      foreach auxiliar [x -> 
+      foreach filaActual [x -> 
       set listaProv lput (word last x) listaProv 
       ]
-      
       ;La ordeno para identificar posteriormente los elementos mas facil
       set listaProv sort listaProv
       
@@ -395,7 +432,11 @@ to-report ID3:ID3_aux [df]
       set depth depth + 1
       ]
       report r]
-    ;----------------------------------------------------------------------------------------------------SEGUNDO PARÁMETRO----------------------------------------------------------------------------------------------------
+    
+    
+    
+    ;----------------------------------------------------------------------------------------------------SEGUNDO PARÁMETRO----------------------------------------------------------------------------------------------------ARRIBA
+    
     
     
     hatch-ID3:nodes 1
@@ -406,19 +447,14 @@ to-report ID3:ID3_aux [df]
       ;Para saber en que categoría estoy iterando para hacer el truncamiento, es decir, a partir de esta categoria voy a dar los porcentajes que salen abajo al truncar
       ;ya que no puedo seguir poniendo mas categorias hacia abajo ya que el árbol tendría mas profundidad de la que le hayamos puesto, es muy importante saber que no todas las
       ;categorias de aqui nos interesan, solamente las que la profundidad "depth" sobrepase el limite que hayamos puesto nosotros en el parámetro que hemos añadido.
-      set categoria mx
       set depth depth + 1
-      
       foreach (remove-duplicates bf (DF:column mx df))
       [ x ->
-       set categoria2 mx
-       set aristaActual2 x
-        
-    set auxiliar1 (DF:filter-att DataFrame categoria2 aristaActual2)
-    set auxiliar1 remove-item 0 auxiliar1
-       
-        ;para saber en cuales de las aristas me encuentro iterando, es decir, una de las aristas de la categoria actual
-        set aristaActual x 
+       set categoria mx ;Guardo la categoría que se está iterando
+       set aristaActual x ;Para saber en cuales de las aristas me encuentro iterando, es decir, una de las aristas de la categoria actual
+       set control 1 ;Para controlar la primera ejecución en el primer parámetro
+       set filaActual (DF:filter-att DataFrame categoria aristaActual) ;Contiene las filas de las categorias truncadas que corresponden a una arista actual en el caso de ejecutar el data de "PlayGolf"
+       set filaActual remove-item 0 filaActual ;Quito la parte de los nombres q indican de q es cada columna, nos interesan solo las filas, no necesitamos los nombres de las columnas
         create-ID3:link-to (ID3:ID3_aux DF:filter-att df mx x)
         [
           set ID3:att_value x
@@ -469,8 +505,8 @@ to-report ID3:evaluate [datum]
   [ifelse ID3:node-type = 2
     [
       if ID3:porcentaje != 0 and (not empty? ID3:porcentaje) [
+        print (ID3:porcentaje)
         let valorElegido first rnd:weighted-one-of-list ID3:porcentaje last
-        print (valorElegido)
         report valorElegido
       ]
       report ID3:value]
@@ -517,34 +553,3 @@ to-report ID3:num2att [df Latt]
   ]
   report df
 end
-
-to test2
-  
-  let m matrix:from-row-list [[0 5][0 5]]
-  output-print "Matriz de confusión:\n"
-  let a matrix:get m 0 0 ;; what number is in row 1, column 2?
-  let b matrix:get m 0 1 
-  let c matrix:get m 1 0 
-  let d matrix:get m 1 1 
-  
-  set verdaderoNegativo  ( a / ( a + b ))
-  set exactitud          ( d / ( c + d ) )
-  set sensibilidad       ( d / ( d + c ) )
-  set especifidad        ( a / ( a +  b ) )
-  set precisionAC        ( (a + d) / ( a +  b + c + d) )
-   
-  
-  output-print (word  "│              │   negativo   │   positivo   │" )
-  output-print (word  "├──────────────┼──────────────┼──────────────┼──────────────┤" )
-  output-print (word  "├   negativo   ┼      "a"       ┼       "b"      ┼       "verdaderoNegativo"      ┤" )
-  output-print (word  "├              ┼              ┼              ┼      VN      ┤" )
-  output-print (word  "├──────────────┼──────────────┼──────────────┼──────────────┤" )
-  output-print (word  "├   positivo   ┼      "c"       ┼       "d"      ┼       "exactitud"      ┤" )
-  output-print (word  "├              ┼              ┼              ┼   exactitud  ┤" )
-  output-print (word  "├──────────────┼──────────────┼──────────────┼──────────────┤" )
-  output-print (word  "├              ┼      "sensibilidad"       ┼       "especifidad"      ┼      "precisionAC"     ┤" )
-  output-print (word  "├              ┼ sensibilidad ┼  especifidad ┼   precision  ┤" )
-  output-print (word  "└──────────────┴──────────────┴──────────────┴──────────────┘" )
-
-end
-
