@@ -231,7 +231,7 @@ to mostrar-Matriz-Confusion [m]
   print (word  "Verdadero Negativo: "precision verdaderoNegativo 2)
   print (word  "Exactitud: "precision exactitud 2)
   print (word  "Sensibilidad: "precision sensibilidad 2)
-  print (word  "Especifidad: "precision especifidad 2)
+  print (word  "Especificidad: "precision especifidad 2)
   print (word  "Precision: "precision precisionAC 2)
   ][
     
@@ -241,10 +241,6 @@ to mostrar-Matriz-Confusion [m]
     
   output-print (word "\nPrecision: "precisionAC)
   ]
-  
-  
-  
-  
 end
 
 
